@@ -1,0 +1,390 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Sora:wght@500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   Design tokens — Kaboz brand orange + Onsus/Adarc multi-accent retail palette
+--------------------------------------------------------------------------- */
+:root {
+  --kb-orange: #f06418;
+  --kb-orange-dark: #d4550f;
+  --kb-orange-soft: #fff4ed;
+  --kb-blue: #004ec3;
+  --kb-blue-dark: #003a94;
+  --kb-blue-soft: #e8f1fc;
+  --kb-purple: #f06418;
+  --kb-purple-dark: #d4550f;
+  --kb-purple-soft: #fff4ed;
+  --kb-gold: #ffe000;
+  --kb-gold-dark: #ca8a04;
+  --kb-gold-soft: #fff8cc;
+  --kb-green: #16803c;
+  --kb-green-dark: #126532;
+  --kb-green-soft: #e7f6ec;
+  --kb-red: #f06418;
+  --kb-red-dark: #d4550f;
+  --kb-red-soft: #fff4ed;
+  --kb-price: #f06418;
+  --kb-ink: #212b36;
+  --kb-slate: #333e48;
+  --kb-mute: #6b7280;
+  --kb-faint: #999999;
+  --kb-line: #e8e8e8;
+  --kb-line-soft: #eeeeee;
+  --kb-soft: #f7f7f7;
+  --kb-page: #ffffff;
+  --kb-nav: #f5f5f5;
+  --kb-dark: #1a1a1a;
+  --kb-sale: #f06418;
+  --kb-new: #ffe000;
+  --kb-star: #fac100;
+  --kb-container: 1860px;
+  --kb-gutter: 0.75rem;
+  --kb-radius-card: 6px;
+  --kb-radius-control: 6px;
+  --kb-header-shadow: 0 8px 24px rgba(15, 15, 15, 0.08);
+  --kb-focus-ring: 0 0 0 3px rgba(109, 40, 217, 0.35);
+  --kb-touch: 44px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --kb-gutter: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --kb-gutter: 1.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --kb-gutter: 1.25rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  :root {
+    --kb-gutter: 1.5rem;
+  }
+}
+
+@layer base {
+  * {
+    font-family: "DM Sans", system-ui, sans-serif;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    color: var(--kb-ink);
+    background: var(--kb-page);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--kb-purple);
+    outline-offset: 2px;
+  }
+
+  button:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: "Sora", system-ui, sans-serif;
+  }
+
+  /* Content width + horizontal padding (Onsus ~1515px store frame) */
+  .kb-container {
+    @apply mx-auto w-full;
+    max-width: var(--kb-container);
+    padding-left: var(--kb-gutter);
+    padding-right: var(--kb-gutter);
+  }
+
+  /* Section vertical rhythm */
+  .kb-section {
+    @apply py-8 sm:py-10 lg:py-12;
+  }
+
+  .kb-section-tight {
+    @apply py-5 sm:py-6 lg:py-8;
+  }
+
+  /* Typography helpers */
+  .kb-h1 {
+    @apply font-display text-2xl font-bold leading-tight text-kaboz-ink sm:text-3xl lg:text-display-lg;
+  }
+
+  .kb-h2 {
+    @apply font-display text-lg font-bold leading-tight text-kaboz-ink sm:text-xl md:text-2xl;
+  }
+
+  .kb-h3 {
+    @apply font-display text-base font-bold leading-snug text-kaboz-ink sm:text-lg;
+  }
+
+  .kb-eyebrow {
+    @apply text-[11px] font-bold uppercase tracking-[0.18em] text-kaboz-purple;
+  }
+
+  .kb-muted {
+    @apply text-sm text-kaboz-mute;
+  }
+
+  /* Buttons */
+  .kb-btn {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-control px-5 text-sm font-bold uppercase tracking-wide transition duration-base focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kaboz-purple disabled:pointer-events-none disabled:opacity-55;
+  }
+
+  .kb-btn-primary {
+    @apply kb-btn bg-kaboz-orange text-white hover:bg-kaboz-orange-dark active:bg-kaboz-orange-dark;
+  }
+
+  .kb-btn-secondary {
+    @apply kb-btn border border-kaboz-line bg-white text-kaboz-ink hover:border-kaboz-orange hover:text-kaboz-orange;
+  }
+
+  .kb-btn-dark {
+    @apply kb-btn bg-kaboz-dark text-white hover:bg-black active:bg-black;
+  }
+
+  .kb-btn-gold {
+    @apply kb-btn bg-kaboz-gold text-kaboz-ink hover:bg-kaboz-gold-dark active:bg-kaboz-gold-dark;
+  }
+
+  .kb-btn-success {
+    @apply kb-btn bg-kaboz-green text-white hover:bg-kaboz-green-dark active:bg-kaboz-green-dark;
+  }
+
+  .kb-btn-danger {
+    @apply kb-btn bg-kaboz-red text-white hover:bg-kaboz-red-dark active:bg-kaboz-red-dark;
+  }
+
+  .kb-btn-ghost {
+    @apply kb-btn bg-transparent text-kaboz-ink hover:bg-kaboz-soft hover:text-kaboz-orange;
+  }
+
+  .kb-btn-sm {
+    @apply min-h-[36px] px-3.5 text-xs;
+  }
+
+  .kb-link {
+    @apply font-medium text-kaboz-orange transition hover:text-kaboz-orange-dark hover:underline;
+  }
+
+  .kb-price {
+    @apply font-semibold text-kaboz-price;
+  }
+
+  .kb-stock {
+    @apply font-semibold text-kaboz-green;
+  }
+
+  /* Form controls */
+  .kb-input {
+    @apply h-11 w-full rounded-control border border-kaboz-line bg-white px-3.5 text-sm text-kaboz-ink placeholder:text-kaboz-faint transition focus:border-kaboz-purple focus:outline-none focus:ring-2 focus:ring-kaboz-purple/25 disabled:bg-kaboz-soft disabled:opacity-70;
+  }
+
+  .kb-select {
+    @apply kb-input appearance-none pr-9;
+  }
+
+  .kb-label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-wide text-kaboz-mute;
+  }
+
+  /* Cards */
+  .kb-product-card {
+    @apply relative flex h-full flex-col bg-transparent;
+  }
+
+  .kb-product-media {
+    @apply relative aspect-square overflow-hidden rounded-card border border-kaboz-line-soft bg-white;
+  }
+
+  .kb-category-card {
+    @apply relative block overflow-hidden rounded-card border border-kaboz-line bg-white transition duration-base hover:border-kaboz-purple hover:shadow-card;
+  }
+
+  /* Badges — Adarc/Onsus semantic colors */
+  .kb-badge-sale {
+    @apply absolute left-2.5 top-2.5 z-[1] flex h-11 w-11 flex-col items-center justify-center rounded-full bg-kaboz-sale text-center leading-none text-white shadow-sm;
+  }
+
+  .kb-badge-new {
+    @apply absolute left-2.5 top-2.5 z-[1] rounded-sm bg-kaboz-gold px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-kaboz-ink;
+  }
+
+  .kb-badge-best {
+    @apply absolute left-2.5 top-2.5 z-[1] rounded-sm bg-kaboz-green px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-white;
+  }
+
+  .kb-badge-soft {
+    @apply inline-flex items-center rounded-sm bg-kaboz-soft px-2 py-0.5 text-[11px] font-semibold text-kaboz-slate;
+  }
+
+  .kb-badge-outline {
+    @apply inline-flex items-center rounded-sm border border-kaboz-line px-2 py-0.5 text-[11px] font-semibold text-kaboz-mute;
+  }
+
+  /* Breadcrumb trail */
+  .kb-breadcrumb {
+    @apply mb-4 flex flex-wrap items-center gap-1.5 text-[13px] text-kaboz-mute sm:mb-5;
+  }
+
+  .kb-breadcrumb-sep {
+    @apply text-kaboz-faint;
+  }
+
+  /* Section heading bar (used with SectionHeader) */
+  .kb-section-head {
+    @apply mb-5 flex items-end justify-between gap-3 border-b border-kaboz-line pb-3 sm:mb-6;
+  }
+
+  /* Product grid — equal-height cards via flex children */
+  .kb-product-grid {
+    @apply grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-5;
+  }
+
+  .kb-product-grid > * {
+    @apply h-full min-w-0;
+  }
+
+  /* Touch-friendly icon hit area */
+  .kb-icon-btn {
+    @apply inline-flex h-11 w-11 items-center justify-center rounded-full text-kaboz-ink transition hover:bg-kaboz-soft hover:text-kaboz-purple focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kaboz-purple;
+  }
+}
+
+/*
+  Smooth image pop on hover — site-wide.
+  Parent: add `group` (or `group/item`) + `overflow-hidden`.
+  Image: add `kb-img-pop`.
+*/
+.kb-img-pop {
+  transform: translateZ(0) scale(1);
+  transition:
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 500ms ease;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .kb-img-pop,
+  .group\/item:hover .kb-img-pop {
+    transform: translateZ(0) scale(1.06);
+  }
+}
+
+/* Space for fixed mobile bottom nav */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 4.25rem;
+  }
+}
+
+a.active hr {
+  display: block;
+}
+
+@media (max-width: 640px) {
+  a.active {
+    background-color: var(--kb-purple);
+    color: white;
+  }
+}
+
+.rich-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.rich-content th,
+.rich-content td {
+  border: 1px solid #d1d5db;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.rich-content th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+}
+
+.rich-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Smooth mega-menu reveal */
+.mega-enter {
+  animation: megaFade 0.18s ease-out;
+}
+
+@keyframes megaFade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Kaboz Living landing — hide OS scrollbar arrow buttons on this page */
+html.living-page-active,
+body.living-page-active {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html.living-page-active::-webkit-scrollbar,
+body.living-page-active::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.living-nav-enter {
+  animation: livingFade 0.45s ease-out;
+}
+
+.living-hero-enter {
+  animation: livingHero 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes livingFade {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes livingHero {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
