@@ -2,25 +2,32 @@ import React, { useContext, useMemo } from "react";
 import { ShopContext } from "../context/ShopContext";
 import ProductItem from "./ProductItem";
 import SectionHeader from "./SectionHeader";
+import { isCctvProduct } from "../utils/categoryLinks";
 
 /**
  * Best Seller — Onsus 2-row product grid (5 × 2 on desktop).
+ * Row 1 is 100% CCTV Cameras, Row 2 contains other products without duplicates.
  */
 const BestSellerGrid = ({ preferredIds = [] }) => {
   const { products, productsLoading } = useContext(ShopContext);
 
   const items = useMemo(() => {
-    if (preferredIds?.length) {
-      const byId = Object.fromEntries(
-        (products || []).map((p) => [String(p._id), p])
-      );
-      const ordered = preferredIds.map((id) => byId[String(id)]).filter(Boolean);
-      if (ordered.length) return ordered.slice(0, 10);
-    }
-    const flagged = (products || []).filter((p) => p.bestseller);
-    const source = flagged.length ? flagged : products || [];
-    return source.slice(0, 10);
-  }, [products, preferredIds]);
+    const list = products || [];
+    if (!list.length) return [];
+
+    // Row 1: First 5 items must be CCTV camera products
+    const cctv = list.filter(isCctvProduct);
+    const row1 = cctv.slice(0, 5);
+    const row1Ids = new Set(row1.map((p) => String(p._id)));
+
+    // Row 2: Next 5 items (other bestsellers or products, no duplicates from row 1)
+    const remaining = list.filter((p) => !row1Ids.has(String(p._id)));
+    const bestsellers = remaining.filter((p) => p.bestseller);
+    const candidateList = bestsellers.length >= 5 ? bestsellers : remaining;
+    const row2 = candidateList.slice(0, 5);
+
+    return [...row1, ...row2];
+  }, [products]);
 
   if (productsLoading) {
     return (

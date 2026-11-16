@@ -34,10 +34,10 @@ export default {
           gold: "#FFE000",
           "gold-dark": "#CA8A04",
           "gold-soft": "#FFF8CC",
-          // Best-seller / success green
-          green: "#16803C",
-          "green-dark": "#126532",
-          "green-soft": "#E7F6EC",
+          // Best-seller / success green — remapped to brand orange per theme
+          green: "#F06418",
+          "green-dark": "#D4550F",
+          "green-soft": "#FFF4ED",
           // Former sale/urgency red — remapped to brand orange
           red: "#F06418",
           "red-dark": "#D4550F",

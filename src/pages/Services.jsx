@@ -92,6 +92,16 @@ const Services = () => {
     );
   }, [filteredServices, activeId]);
 
+  const activeIndex = useMemo(() => {
+    if (!activeService) return 0;
+    const idx = filteredServices.findIndex(
+      (s) => (s.slug || s._id) === (activeService.slug || activeService._id)
+    );
+    return idx >= 0 ? idx : 0;
+  }, [filteredServices, activeService]);
+
+  const isImageRight = activeIndex % 2 === 0;
+
   useEffect(() => {
     if (!activeService) return;
     const id = activeService.slug || activeService._id;
@@ -236,91 +246,98 @@ const Services = () => {
                   id={activeService.slug || activeService._id}
                   className="scroll-mt-28"
                 >
-                  <h3 className="text-[22px] font-semibold text-kaboz-ink sm:text-[26px]">
-                    {activeService.title}
-                  </h3>
-                  {activeService.shortDescription ? (
-                    <p className="mt-2 text-[15px] leading-relaxed text-kaboz-mute sm:text-[16px]">
-                      {activeService.shortDescription}
-                    </p>
-                  ) : null}
-
-                  {/* Blog-list style large image */}
-                  {activeService.image ? (
-                    <div className="group mt-6 overflow-hidden rounded-[4px] bg-kaboz-soft">
-                      <img
-                        src={activeService.image}
-                        alt={activeService.title}
-                        className="kb-img-pop aspect-[16/9] w-full object-cover"
-                      />
-                    </div>
-                  ) : null}
-
-                  {activeService.overview ? (
-                    <div className="mt-8 border-b border-kaboz-line pb-8">
-                      <h4 className="text-[15px] font-bold uppercase tracking-wide text-kaboz-orange">
-                        Overview
-                      </h4>
-                      <p className="mt-3 text-[15px] leading-7 text-kaboz-mute sm:leading-8">
-                        {activeService.overview}
-                      </p>
-                    </div>
-                  ) : null}
-
-                  {(activeService.details || []).length > 0 ? (
-                    <div className="mt-8 border-b border-kaboz-line pb-8">
-                      <h4 className="text-[15px] font-bold uppercase tracking-wide text-kaboz-green">
-                        What we provide
-                      </h4>
-                      <ul className="mt-4 space-y-3">
-                        {activeService.details.map((detail, i) => (
-                          <li
-                            key={i}
-                            className="flex items-start gap-3 text-[14px] leading-relaxed text-kaboz-mute sm:text-[15px]"
-                          >
-                            <span
-                              className={`mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full ${
-                                i % 3 === 0
-                                  ? "bg-kaboz-orange"
-                                  : i % 3 === 1
-                                    ? "bg-kaboz-green"
-                                    : "bg-kaboz-purple"
-                              }`}
-                              aria-hidden
-                            />
-                            {detail}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
-
-                  {activeService.idealFor ? (
-                    <div className="mt-8">
-                      <h4 className="text-[15px] font-bold uppercase tracking-wide text-kaboz-red">
-                        Ideal for
-                      </h4>
-                      <p className="mt-3 text-[15px] leading-7 text-kaboz-mute sm:leading-8">
-                        {activeService.idealFor}
-                      </p>
-                    </div>
-                  ) : null}
-
-                  <div className="mt-8 flex flex-wrap gap-3">
-                    <a
-                      href={whatsappHref(activeService)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-[6px] bg-kaboz-green px-5 py-2.5 text-sm font-bold text-white transition hover:bg-kaboz-green-dark"
+                  <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10 items-start">
+                    {/* Content Column */}
+                    <div
+                      className={`min-w-0 ${
+                        isImageRight ? "lg:order-1" : "lg:order-2"
+                      }`}
                     >
-                      WhatsApp us
-                    </a>
-                    <Link
-                      to="/contact"
-                      className="inline-flex items-center justify-center rounded-[6px] border border-kaboz-line px-5 py-2.5 text-sm font-bold text-kaboz-ink transition hover:border-kaboz-orange hover:text-kaboz-orange"
-                    >
-                      Contact form
-                    </Link>
+                      <h3 className="text-[24px] font-bold text-kaboz-ink sm:text-[30px] lg:text-[32px] leading-tight">
+                        {activeService.title}
+                      </h3>
+                      {activeService.shortDescription ? (
+                        <p className="mt-2.5 text-[15px] leading-relaxed text-kaboz-mute sm:text-[16px]">
+                          {activeService.shortDescription}
+                        </p>
+                      ) : null}
+
+                      {activeService.overview ? (
+                        <div className="mt-6 border-b border-kaboz-line pb-6">
+                          <h4 className="text-[14px] font-bold uppercase tracking-wide text-kaboz-orange">
+                            Overview
+                          </h4>
+                          <p className="mt-2.5 text-[15px] leading-7 text-kaboz-mute">
+                            {activeService.overview}
+                          </p>
+                        </div>
+                      ) : null}
+
+                      {(activeService.details || []).length > 0 ? (
+                        <div className="mt-6 border-b border-kaboz-line pb-6">
+                          <h4 className="text-[14px] font-bold uppercase tracking-wide text-kaboz-orange">
+                            What we provide
+                          </h4>
+                          <ul className="mt-3.5 space-y-2.5">
+                            {activeService.details.map((detail, i) => (
+                              <li
+                                key={i}
+                                className="flex items-start gap-2.5 text-[14px] leading-relaxed text-kaboz-mute sm:text-[15px]"
+                              >
+                                <span
+                                  className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-kaboz-orange"
+                                  aria-hidden
+                                />
+                                {detail}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : null}
+
+                      {activeService.idealFor ? (
+                        <div className="mt-6 border-b border-kaboz-line pb-6">
+                          <h4 className="text-[14px] font-bold uppercase tracking-wide text-kaboz-orange">
+                            Ideal for
+                          </h4>
+                          <p className="mt-2.5 text-[15px] leading-7 text-kaboz-mute">
+                            {activeService.idealFor}
+                          </p>
+                        </div>
+                      ) : null}
+
+                      <div className="mt-6 flex flex-wrap gap-3">
+                        <a
+                          href={whatsappHref(activeService)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center rounded-[6px] bg-kaboz-orange px-6 py-3 text-sm font-bold text-white transition hover:bg-kaboz-orange-dark shadow-sm"
+                        >
+                          WhatsApp us
+                        </a>
+                        <Link
+                          to="/contact"
+                          className="inline-flex items-center justify-center rounded-[6px] border border-kaboz-line px-6 py-3 text-sm font-bold text-kaboz-ink transition hover:border-kaboz-orange hover:text-kaboz-orange"
+                        >
+                          Contact form
+                        </Link>
+                      </div>
+                    </div>
+
+                    {/* Image Column (Sticky on Desktop) */}
+                    {activeService.image ? (
+                      <div
+                        className={`overflow-hidden rounded-[8px] border border-kaboz-line bg-kaboz-soft shadow-sm lg:sticky lg:top-28 lg:self-start ${
+                          isImageRight ? "lg:order-2" : "lg:order-1"
+                        }`}
+                      >
+                        <img
+                          src={activeService.image}
+                          alt={activeService.title}
+                          className="kb-img-pop aspect-[4/3] w-full object-cover"
+                        />
+                      </div>
+                    ) : null}
                   </div>
                 </article>
               ) : (

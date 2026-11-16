@@ -45,15 +45,13 @@ export const SECURITY_RELATED_CATEGORIES = [
 /** Hidden from the horizontal menu bar (still available in Menu mega / drawer). */
 const HIDDEN_FROM_TOP_NAV = new Set([
   "Curtains",
-  "Security Cameras",
   "Luxury Bedsheets",
   "Bedsheets",
   "Upholstery",
 ]);
 
-/** Preferred order: Living + Security hub, then client Home Menu sequence. */
+/** Preferred order: CCTV Cameras first, followed by client specified sequence. */
 const TOP_NAV_PRIORITY = [
-  "Curtains",
   "Security Cameras",
   "Access Control",
   "Video Intercom",
@@ -61,6 +59,10 @@ const TOP_NAV_PRIORITY = [
   "Kits",
   "Software License",
   "Accessories",
+  "Curtains",
+  "Bedsheets",
+  "Luxury Bedsheets",
+  "Upholstery",
 ];
 
 /**
@@ -122,6 +124,7 @@ export const getTopNavCategories = (categories = [], limit = 8) =>
 /** Client-approved menu order (labels are the display names). */
 const DEPARTMENT_ORDER = [
   "CCTV",
+  "Security Cameras",
   "Access Control",
   "Video Intercom",
   "Network Switches",
@@ -148,8 +151,15 @@ const KIT_SUB_ORDER = [/cctv/i, /intercom/i, /access\s*control/i];
 
 export const getDepartmentCategories = (categories = []) => {
   const security = categories.find((c) => c.name === SECURITY_CATEGORY_NAME);
-  const list = withoutLivingDuplicates(orderNavCategories(categories)).map(
-    (c) => {
+  const camRec = [/camera/i, /recorder|nvr|dvr/i];
+  const secSubs = (security?.subcategories || []).filter((s) =>
+    camRec.some((re) => re.test(s.name || ""))
+  );
+
+  // Exclude Security Cameras and CCTV from the raw map because we add the unified CCTV entry
+  const list = withoutLivingDuplicates(orderNavCategories(categories))
+    .filter((c) => c.name !== SECURITY_CATEGORY_NAME && c.name !== "CCTV")
+    .map((c) => {
       if (c.name === "Access Control") {
         return {
           ...c,
@@ -166,35 +176,39 @@ export const getDepartmentCategories = (categories = []) => {
         };
       }
       return c;
-    }
-  );
-
-  const camRec = [/camera/i, /recorder|nvr|dvr/i];
-  const secSubs = (security?.subcategories || []).filter((s) =>
-    camRec.some((re) => re.test(s.name || ""))
-  );
-
-  if (!list.some((c) => c.name === "CCTV")) {
-    list.push({
-      _id: security?._id || "dept-cctv",
-      name: "CCTV",
-      href: SECURITY_HUB_PATH,
-      filterName: SECURITY_CATEGORY_NAME,
-      subcategories: sortSubs(
-        secSubs.length ? secSubs : security?.subcategories || [],
-        camRec
-      ),
     });
-  }
+
+  // Push exactly ONE unified CCTV entry at the top
+  list.unshift({
+    _id: security?._id || "dept-cctv",
+    name: "CCTV",
+    href: SECURITY_HUB_PATH,
+    filterName: SECURITY_CATEGORY_NAME,
+    subcategories: sortSubs(
+      secSubs.length ? secSubs : security?.subcategories || [],
+      camRec
+    ),
+  });
+
   if (!list.some((c) => c.name === "Kits")) {
     list.push({ _id: "dept-kits", name: "Kits", subcategories: [] });
+  }
+
+  // Deduplicate by display name so CCTV Cameras never appears twice
+  const seenNames = new Set();
+  const deduped = [];
+  for (const item of list) {
+    const dispName = getCategoryDisplayName(item.name);
+    if (seenNames.has(dispName)) continue;
+    seenNames.add(dispName);
+    deduped.push(item);
   }
 
   const rank = (c) => {
     const i = DEPARTMENT_ORDER.indexOf(c.name);
     return i === -1 ? DEPARTMENT_ORDER.length : i;
   };
-  return list
+  return deduped
     .map((c, idx) => ({ c, idx }))
     .sort((x, y) => rank(x.c) - rank(y.c) || x.idx - y.idx)
     .map(({ c }) => c);
@@ -223,3 +237,45 @@ export const getCategoryPath = (categoryName, subcategorySlug) => {
 /** Living product-category shop URL (curtains/bedsheets/…), not the brand hub. */
 export const getLivingShopPath = (categoryName) =>
   LIVING_SHOP_PATHS[categoryName] || getCategoryPath(categoryName);
+
+/** Helper to identify actual CAMERA products (Bullet, Turret, Dome, Network Cameras) */
+export const isCameraProduct = (product) => {
+  if (!product) return false;
+  const name = (product?.name || "").toLowerCase();
+  const cat = (product?.category || "").toLowerCase();
+  const sub = (product?.subCategory || "").toLowerCase();
+
+  // Exclude accessories / plastic boxes / brackets / cables / cabinets / connectors / cards
+  if (
+    cat === "accessories" ||
+    /box|cabinet|bracket|cable|connector|card|mount/i.test(name)
+  ) {
+    return false;
+  }
+
+  // Exclude DVR / NVR / Recorders
+  if (/dvr|nvr|recorder/i.test(name) || /recorder/i.test(sub)) {
+    return false;
+  }
+
+  // Must match camera types
+  return (
+    /camera|bullet|turret|dome|ptz|colorvu/i.test(name) ||
+    /camera/i.test(sub) ||
+    (cat === "security cameras" && !/dvr|nvr|recorder|box/i.test(name))
+  );
+};
+
+export const isCctvProduct = isCameraProduct;
+
+/**
+ * Prioritizes Camera products first, then other products.
+ */
+export const prioritizeCctvProducts = (products = []) => {
+  return [...products].sort((a, b) => {
+    const aCam = isCameraProduct(a) ? 1 : 0;
+    const bCam = isCameraProduct(b) ? 1 : 0;
+    if (aCam !== bCam) return bCam - aCam;
+    return 0;
+  });
+};

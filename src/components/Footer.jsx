@@ -183,15 +183,15 @@ const Footer = () => {
               </FooterColumn>
 
               <FooterColumn title="Contact">
-                <ul className="space-y-4 text-[14px] text-kaboz-mute">
+                <ul className="space-y-4 text-kaboz-mute">
                   <li className="flex gap-3">
                     <span
-                      className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center text-kaboz-ink"
+                      className="mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center text-kaboz-ink"
                       aria-hidden
                     >
                       <svg
                         viewBox="0 0 24 24"
-                        className="h-[18px] w-[18px]"
+                        className="h-5 w-5"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="1.7"
@@ -200,7 +200,7 @@ const Footer = () => {
                         <circle cx="12" cy="10" r="2.5" />
                       </svg>
                     </span>
-                    <span className="font-semibold text-kaboz-orange">
+                    <span className="text-[15px] sm:text-[16px] font-medium leading-snug text-kaboz-ink">
                       KABOZ FZE LLC, Amber Gem Tower - 2602, Al Rashidiya 3,
                       Ajman
                     </span>
@@ -212,7 +212,7 @@ const Footer = () => {
                     >
                       <svg
                         viewBox="0 0 24 24"
-                        className="h-[18px] w-[18px]"
+                        className="h-5 w-5"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="1.7"
@@ -222,7 +222,7 @@ const Footer = () => {
                     </span>
                     <a
                       href="tel:+971552693100"
-                      className="font-semibold text-kaboz-orange transition hover:text-kaboz-orange-dark"
+                      className="text-[19px] sm:text-[21px] font-bold text-kaboz-orange transition hover:text-kaboz-orange-dark"
                     >
                       +971 55 269 3100
                     </a>
@@ -234,7 +234,7 @@ const Footer = () => {
                     >
                       <svg
                         viewBox="0 0 24 24"
-                        className="h-[18px] w-[18px]"
+                        className="h-5 w-5"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="1.7"
@@ -245,7 +245,7 @@ const Footer = () => {
                     </span>
                     <a
                       href="mailto:sales@kaboz.ae"
-                      className="kb-link font-semibold !text-kaboz-orange hover:!text-kaboz-orange-dark"
+                      className="kb-link text-[15px] sm:text-[16px] font-semibold !text-kaboz-orange hover:!text-kaboz-orange-dark"
                     >
                       sales@kaboz.ae
                     </a>

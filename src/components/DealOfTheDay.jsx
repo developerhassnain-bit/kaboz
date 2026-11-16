@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import { getDiscountPercent } from "../utils/pricing";
 import { pickProductsByIds } from "../utils/homepageProducts";
+import { prioritizeCctvProducts } from "../utils/categoryLinks";
 import { IconChevronLeft, IconChevronRight } from "./ui/Icons";
 
 const pad = (n) => String(n).padStart(2, "0");
@@ -34,15 +35,17 @@ const DealOfTheDay = ({ preferredIds = [] }) => {
 
   const deals = useMemo(() => {
     const curated = pickProductsByIds(products, preferredIds, 12);
-    if (curated.length) return curated;
-    const list = (products || [])
-      .filter((p) => getDiscountPercent(p.price, p.originalPrice) > 0)
-      .sort(
-        (a, b) =>
-          getDiscountPercent(b.price, b.originalPrice) -
-          getDiscountPercent(a.price, a.originalPrice)
-      );
-    return (list.length ? list : products || []).slice(0, 8);
+    if (curated.length) return prioritizeCctvProducts(curated);
+    const withDiscount = (products || []).filter(
+      (p) => getDiscountPercent(p.price, p.originalPrice) > 0
+    );
+    const pool = withDiscount.length ? withDiscount : products || [];
+    const sorted = [...pool].sort(
+      (a, b) =>
+        getDiscountPercent(b.price, b.originalPrice) -
+        getDiscountPercent(a.price, a.originalPrice)
+    );
+    return prioritizeCctvProducts(sorted).slice(0, 8);
   }, [products, preferredIds]);
 
   const scrollByCard = (dir) => {

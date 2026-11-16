@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ShopContext } from "../context/ShopContext";
 import ProductItem from "./ProductItem";
-import { getCategoryPath } from "../utils/categoryLinks";
+import { getCategoryPath, isCctvProduct, prioritizeCctvProducts } from "../utils/categoryLinks";
 import { pickProductsByIds } from "../utils/homepageProducts";
 import { isInWishlist, toggleWishlistId } from "../utils/wishlist";
 import {
@@ -165,7 +165,7 @@ const CompactRow = ({ product, currency }) => {
         ) : null}
         <Link
           to={href}
-          className="mt-1 line-clamp-2 text-sm font-semibold leading-snug text-kaboz-orange transition group-hover/item:text-kaboz-price group-focus-within/item:text-kaboz-price"
+          className="mt-1 line-clamp-2 text-sm font-semibold leading-snug text-kaboz-ink transition group-hover/item:text-kaboz-price group-focus-within/item:text-kaboz-price"
         >
           {product.name}
         </Link>
@@ -288,7 +288,7 @@ const FeaturedCenter = ({ product, currency }) => {
         ) : null}
         <Link
           to={href}
-          className="mt-1 block line-clamp-2 font-display text-lg font-semibold leading-snug text-kaboz-orange transition group-hover/item:text-kaboz-price group-focus-within/item:text-kaboz-price xl:text-xl"
+          className="mt-1 block line-clamp-2 font-display text-lg font-semibold leading-snug text-kaboz-ink transition group-hover/item:text-kaboz-price group-focus-within/item:text-kaboz-price xl:text-xl"
         >
           {product.name}
         </Link>
@@ -331,40 +331,67 @@ const FeaturedTabs = ({
 
   const pools = useMemo(() => {
     const list = products || [];
+    const allCctv = list.filter(isCctvProduct);
+
     const onSale = list.filter(
       (p) =>
         p.originalPrice && Number(p.originalPrice) > Number(p.price || 0)
     );
     const bestsellers = list.filter((p) => p.bestseller);
     const featured = list.filter((p) => p.featured || p.bestseller);
+
     const curatedFeature = pickProductsByIds(list, featureIds, 12);
     const curatedBest = pickProductsByIds(list, bestSellingIds, 12);
     const curatedSale = pickProductsByIds(list, onSaleIds, 12);
 
-    const fill = (preferred, fallback) => {
-      const src = preferred.length
-        ? preferred
-        : fallback.length
-          ? fallback
-          : list;
-      if (!src.length) return [];
-      // Ensure up to 7 unique items for L/C/R layout
-      const out = [];
-      const seen = new Set();
-      for (let i = 0; out.length < 7 && i < src.length * 2; i += 1) {
-        const p = src[i % src.length];
-        const id = String(p._id);
-        if (seen.has(id)) continue;
-        seen.add(id);
-        out.push(p);
+    const makeTab = (preferred, fallbackList, cameraOffset = 0) => {
+      // Pick 2-3 distinct cameras for this tab based on cameraOffset
+      const tabCameras = [];
+      for (let i = 0; i < 3 && i < allCctv.length; i++) {
+        tabCameras.push(allCctv[(cameraOffset + i) % allCctv.length]);
       }
-      return out;
+      const tabCamIds = new Set(tabCameras.map((p) => String(p._id)));
+
+      // Primary source for this tab (preferred admin pick or tab's specific fallback)
+      const baseList = preferred.length ? preferred : fallbackList;
+      // Other products for this tab (accessories, switches, etc., avoiding duplicate cameras)
+      const nonCamProducts = baseList.filter((p) => !tabCamIds.has(String(p._id)));
+
+      const result = [];
+      const seen = new Set();
+      const add = (p) => {
+        if (!p?._id) return;
+        const id = String(p._id);
+        if (seen.has(id)) return;
+        seen.add(id);
+        result.push(p);
+      };
+
+      // Slot 0: Camera
+      if (tabCameras[0]) add(tabCameras[0]);
+      // Slots 1-2: Accessories / other items
+      if (nonCamProducts[0]) add(nonCamProducts[0]);
+      if (nonCamProducts[1]) add(nonCamProducts[1]);
+      // Slot 3 (Center featured card): Camera
+      if (tabCameras[1]) add(tabCameras[1]);
+      // Slots 4-6: Other items & another camera
+      if (nonCamProducts[2]) add(nonCamProducts[2]);
+      if (nonCamProducts[3]) add(nonCamProducts[3]);
+      if (tabCameras[2]) add(tabCameras[2]);
+
+      // Fill remaining up to 7 from baseList or products
+      for (const p of [...nonCamProducts, ...baseList, ...list]) {
+        if (result.length >= 7) break;
+        add(p);
+      }
+
+      return result.slice(0, 7);
     };
 
     return {
-      feature: fill(curatedFeature, featured),
-      bestselling: fill(curatedBest, bestsellers),
-      onsale: fill(curatedSale, onSale),
+      feature: makeTab(curatedFeature, featured.length ? featured : list, 0),
+      bestselling: makeTab(curatedBest, bestsellers.length ? bestsellers : list, 3),
+      onsale: makeTab(curatedSale, onSale.length ? onSale : list, 6),
     };
   }, [products, featureIds, bestSellingIds, onSaleIds]);
 

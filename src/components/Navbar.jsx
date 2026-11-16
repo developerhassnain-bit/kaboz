@@ -35,7 +35,6 @@ const MAIN_LINKS = [
   { to: "/services", labelKey: "services" },
   { to: "/about", labelKey: "about" },
   { to: "/contact", labelKey: "contact" },
-  { to: "/blog", labelKey: "blog" },
 ];
 
 const Navbar = () => {
@@ -331,6 +330,12 @@ const Navbar = () => {
           </p>
 
           <div className="flex items-center gap-5">
+            <Link
+              to="/blog"
+              className="text-[13px] font-semibold text-kaboz-slate transition hover:text-kaboz-orange"
+            >
+              {t("blog")}
+            </Link>
             <div className="relative" ref={langRef}>
               <button
                 type="button"
@@ -584,19 +589,19 @@ const Navbar = () => {
                 <path d="M9 19h6" />
               </svg>
             </span>
-            <div className="text-[13px] leading-snug">
+            <div className="text-[15px] sm:text-[16px] leading-snug">
               <p className="text-kaboz-mute">
                 {t("callUsNow")}{" "}
                 <a
                   href="tel:+971552693100"
-                  className="font-semibold text-kaboz-red hover:text-kaboz-red-dark"
+                  className="text-[16px] sm:text-[17px] font-bold text-kaboz-orange hover:text-kaboz-orange-dark"
                 >
                   +971 55 269 3100
                 </a>
               </p>
-              <p className="mt-0.5 text-kaboz-mute">
+              <p className="mt-1 text-kaboz-mute">
                 {t("email")}{" "}
-                <a href="mailto:sales@kaboz.ae" className="kb-link !text-kaboz-orange hover:!text-kaboz-orange-dark">
+                <a href="mailto:sales@kaboz.ae" className="kb-link font-semibold text-[15px] sm:text-[16px] !text-kaboz-orange hover:!text-kaboz-orange-dark">
                   sales@kaboz.ae
                 </a>
               </p>

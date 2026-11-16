@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { ShopContext } from "../context/ShopContext";
 import { getDiscountPercent } from "../utils/pricing";
 import { pickProductsByIds } from "../utils/homepageProducts";
+import { isCctvProduct, prioritizeCctvProducts } from "../utils/categoryLinks";
 import {
   isInWishlist,
   toggleWishlistId,
@@ -95,12 +96,12 @@ const CompactProduct = ({ product, currency }) => {
         ) : null}
         <Link
           to={href}
-          className="line-clamp-2 text-[13px] font-semibold leading-snug text-kaboz-orange transition group-hover/item:text-kaboz-price group-focus-within/item:text-kaboz-price"
+          className="line-clamp-2 text-[13px] font-semibold leading-snug text-kaboz-ink transition group-hover/item:text-kaboz-price group-focus-within/item:text-kaboz-price"
         >
           {product.name}
         </Link>
         <div className="mt-1 flex flex-wrap items-baseline gap-1.5">
-          <span className="text-sm font-bold text-kaboz-ink">
+          <span className="text-sm font-bold text-kaboz-price">
             {currency}
             {product.price}
           </span>
@@ -227,26 +228,32 @@ const ProductColumns = ({
   const { products, currency } = useContext(ShopContext);
 
   const columns = useMemo(() => {
-    const list = products || [];
-    const bestsellers = list.filter((p) => p.bestseller);
-    const featured = list.filter((p) => p.featured || p.bestseller);
-    const onSale = list
-      .filter((p) => getDiscountPercent(p.price, p.originalPrice) > 0)
-      .sort(
-        (a, b) =>
-          getDiscountPercent(b.price, b.originalPrice) -
-          getDiscountPercent(a.price, a.originalPrice)
-      );
-    const topRated = [...list]
-      .filter((p) => Number(p.ratingAvg || p.averageRating || 0) > 0)
-      .sort(
-        (a, b) =>
-          Number(b.ratingAvg || b.averageRating || 0) -
-          Number(a.ratingAvg || a.averageRating || 0)
-      );
+    const list = prioritizeCctvProducts(products || []);
+    const cctvOnly = list.filter(isCctvProduct);
+    const bestsellers = prioritizeCctvProducts(list.filter((p) => p.bestseller));
+    const featured = prioritizeCctvProducts(list.filter((p) => p.featured || p.bestseller));
+    const onSale = prioritizeCctvProducts(
+      list
+        .filter((p) => getDiscountPercent(p.price, p.originalPrice) > 0)
+        .sort(
+          (a, b) =>
+            getDiscountPercent(b.price, b.originalPrice) -
+            getDiscountPercent(a.price, a.originalPrice)
+        )
+    );
+    const topRated = prioritizeCctvProducts(
+      [...list]
+        .filter((p) => Number(p.ratingAvg || p.averageRating || 0) > 0)
+        .sort(
+          (a, b) =>
+            Number(b.ratingAvg || b.averageRating || 0) -
+            Number(a.ratingAvg || a.averageRating || 0)
+        )
+    );
 
     const pool = (arr, max = 12, offset = 0) => {
-      const src = arr.length ? arr : list;
+      // Prioritize CCTV first, then other products
+      const src = arr.length ? arr : (cctvOnly.length ? cctvOnly : list);
       if (!src.length) return [];
       const out = [];
       for (let i = 0; i < max && i < Math.max(src.length, max); i += 1) {
@@ -261,9 +268,34 @@ const ProductColumns = ({
       });
     };
 
-    const curatedOr = (ids, fallback) => {
-      const curated = pickProductsByIds(list, ids, 12);
-      return curated.length ? curated : fallback;
+    const curatedOr = (ids, fallback, offset = 0) => {
+      const curated = pickProductsByIds(products || [], ids, 12);
+      const chosen = curated.length ? curated : fallback;
+
+      // 1 camera at top of each column (different camera per column), followed by other products
+      const cam = cctvOnly.length ? cctvOnly[offset % cctvOnly.length] : null;
+      const nonCams = chosen.filter((p) => !isCctvProduct(p));
+
+      const result = [];
+      const seen = new Set();
+      const add = (p) => {
+        if (!p?._id) return;
+        const id = String(p._id);
+        if (seen.has(id)) return;
+        seen.add(id);
+        result.push(p);
+      };
+
+      if (cam) add(cam);
+      for (const p of nonCams) {
+        add(p);
+        if (result.length >= 6) break;
+      }
+      for (const p of chosen) {
+        add(p);
+        if (result.length >= 6) break;
+      }
+      return result;
     };
 
     return [
@@ -271,7 +303,8 @@ const ProductColumns = ({
         title: "Top 20",
         products: curatedOr(
           top20Ids,
-          pool(topRated.length ? topRated : list, 12, 0)
+          pool(topRated.length ? topRated : list, 12, 0),
+          0
         ),
         accent: "blue",
       },
@@ -279,7 +312,8 @@ const ProductColumns = ({
         title: "Featured products",
         products: curatedOr(
           featuredIds,
-          pool(featured.length ? featured : list, 12, 2)
+          pool(featured.length ? featured : list, 12, 2),
+          2
         ),
         accent: "purple",
       },
@@ -287,7 +321,8 @@ const ProductColumns = ({
         title: "Top selling products",
         products: curatedOr(
           topSellingIds,
-          pool(bestsellers.length ? bestsellers : list, 12, 4)
+          pool(bestsellers.length ? bestsellers : list, 12, 4),
+          4
         ),
         accent: "green",
       },
@@ -295,7 +330,8 @@ const ProductColumns = ({
         title: "On-sale products",
         products: curatedOr(
           onSaleIds,
-          pool(onSale.length ? onSale : list, 12, 1)
+          pool(onSale.length ? onSale : list, 12, 1),
+          1
         ),
         accent: "red",
       },
