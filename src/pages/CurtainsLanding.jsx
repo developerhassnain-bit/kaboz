@@ -11,25 +11,25 @@ const PRODUCT_CATEGORIES = [
   {
     name: "Luxury Bedsheets",
     to: LIVING_SHOP_PATHS["Luxury Bedsheets"],
-    image: "/Lumina.jpg",
+    image: "/luxury bedsheets section banner.jpg",
     blurb: "Premium bedding for refined spaces",
   },
   {
     name: "Bedsheets",
     to: LIVING_SHOP_PATHS.Bedsheets,
-    image: "/Idyllic.jpg",
+    image: "/bedsheets section banner.jpg",
     blurb: "Everyday comfort in quality fabrics",
   },
   {
     name: "Curtains",
     to: LIVING_SHOP_PATHS.Curtains,
-    image: "/Curtains-banner.jpeg",
+    image: "/curtains section banner.jpg",
     blurb: "Blackout, sheer, velvet and more",
   },
   {
     name: "Upholstery",
     to: LIVING_SHOP_PATHS.Upholstery,
-    image: "/Terra.jpg",
+    image: "/upholstery section banner.jpg",
     blurb: "Sofas, beds and custom fabric work",
   },
 ];
@@ -88,7 +88,7 @@ const CurtainsLanding = () => {
       {/* Hero */}
       <section className="relative isolate min-h-[400px] overflow-hidden bg-[#2a2420] sm:min-h-[480px] lg:min-h-[540px]">
         <img
-          src="/curtains.jpeg"
+          src="/living hero banner.jpg"
           alt=""
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
           style={{ objectPosition: "78% 45%" }}
@@ -293,7 +293,7 @@ const CurtainsLanding = () => {
                 >
                   <div className="aspect-[4/3] overflow-hidden bg-[#f3efe9]">
                     <img
-                      src={item.image || "/Curtains-banner.jpeg"}
+                      src={item.image || "/curtains section banner.jpg"}
                       alt={item.name}
                       className="kb-img-pop h-full w-full object-cover"
                     />

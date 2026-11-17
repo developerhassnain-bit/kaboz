@@ -8,7 +8,7 @@ const LuxuryBedsheetsLanding = () => (
     breadcrumbLabel="Luxury Bedsheets"
     title="Luxury Bedsheets"
     subtitle="Premium bedding for refined spaces. Explore luxury fabrics and finishes."
-    heroImage="/Lumina.jpg"
+    heroImage="/luxury bedsheets section banner.jpg"
     heroAlt="Kaboz luxury bedsheets"
     pageTitle="Luxury Bedsheets | Kaboz Living"
     metaDescription="Shop luxury bedsheets at Kaboz Living. Premium bedroom textiles for the UAE."

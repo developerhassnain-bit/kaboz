@@ -8,7 +8,7 @@ const CurtainsShopLanding = () => (
     breadcrumbLabel="Curtains"
     title="Curtains"
     subtitle="Blackout, sheer, velvet and more. Open a product to choose design and color options."
-    heroImage="/Curtains-banner.jpeg"
+    heroImage="/curtains section banner.jpg"
     heroAlt="Kaboz curtains"
     pageTitle="Curtains | Kaboz Living"
     metaDescription="Shop curtains at Kaboz Living. Designs with multiple color options for homes and projects in the UAE."

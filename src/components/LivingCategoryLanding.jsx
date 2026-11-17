@@ -94,23 +94,23 @@ const LivingCategoryLanding = ({
       />
 
       {/* Slim Onsus-style category banner */}
-      <div className="group relative mb-5 overflow-hidden rounded-[6px] border border-kaboz-line sm:mb-6">
-        <div className="relative aspect-[21/5] min-h-[100px] w-full overflow-hidden sm:min-h-[120px]">
+      <div className="relative mb-5 overflow-hidden rounded-[6px] border border-kaboz-line sm:mb-6">
+        <div className="relative w-full overflow-hidden bg-kaboz-soft">
           <img
             src={heroImage}
             alt={heroAlt || title}
-            className="kb-img-pop absolute inset-0 h-full w-full object-cover"
+            className="block w-full h-auto aspect-[7/2] object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-transparent" />
-          <div className="absolute inset-0 flex flex-col justify-center px-5 sm:px-8">
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-kaboz-orange">
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-transparent" />
+          <div className="pointer-events-none absolute inset-0 flex flex-col justify-center px-5 sm:px-8">
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-kaboz-orange sm:text-[11px]">
               {eyebrow}
             </p>
-            <h1 className="mt-1 font-display text-2xl font-bold text-white sm:text-3xl">
+            <h1 className="mt-0.5 font-display text-xl font-bold text-white sm:mt-1 sm:text-2xl md:text-3xl">
               {title}
             </h1>
             {subtitle ? (
-              <p className="mt-1.5 max-w-xl text-sm text-white/75 line-clamp-2">
+              <p className="mt-1 max-w-xl text-xs text-white/75 sm:mt-1.5 sm:text-sm line-clamp-2">
                 {subtitle}
               </p>
             ) : null}

@@ -8,7 +8,7 @@ const UpholsteryLanding = () => (
     breadcrumbLabel="Upholstery"
     title="Upholstery"
     subtitle="Sofas, beds, chairs and custom fabric work. Browse fabrics and finishes for your space."
-    heroImage="/Terra.jpg"
+    heroImage="/upholstery section banner.jpg"
     heroAlt="Kaboz upholstery"
     pageTitle="Upholstery | Kaboz Living"
     metaDescription="Shop upholstery fabrics and finishes at Kaboz Living for homes and projects in the UAE."

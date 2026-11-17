@@ -8,7 +8,7 @@ const BedsheetsLanding = () => (
     breadcrumbLabel="Bedsheets"
     title="Bedsheets"
     subtitle="Everyday comfort in quality fabrics. Browse bedsheets for homes and projects across the UAE."
-    heroImage="/Idyllic.jpg"
+    heroImage="/bedsheets section banner.jpg"
     heroAlt="Kaboz bedsheets"
     pageTitle="Bedsheets | Kaboz Living"
     metaDescription="Shop bedsheets at Kaboz Living. Quality everyday bedding for the UAE."
