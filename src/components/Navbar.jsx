@@ -90,6 +90,7 @@ const Navbar = () => {
     setToken,
     setCartItems,
     products,
+    openCartDrawer,
   } = useContext(ShopContext);
 
   const { categories, isLoading: isLoadingCategories } = useCategories();
@@ -303,7 +304,7 @@ const Navbar = () => {
   ) : null;
 
   return (
-    <header className="sticky top-0 z-[100] w-full bg-black shadow-[0_2px_12px_rgba(0,0,0,0.35)] md:bg-white md:shadow-[0_2px_12px_rgba(33,43,54,0.06)]">
+    <header className="relative z-[100] w-full bg-black shadow-[0_2px_12px_rgba(0,0,0,0.35)] md:bg-white md:shadow-[0_2px_12px_rgba(33,43,54,0.06)]">
       {/* —— 1. Desktop utility bar (white) —— */}
       <div className="hidden border-b border-kaboz-line bg-white text-[12px] text-kaboz-mute md:block">
         <div className="kb-container flex h-10 items-center justify-between gap-4 lg:h-[42px]">
@@ -517,40 +518,24 @@ const Navbar = () => {
                 <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
               </svg>
             </NavIconBtn>
-            <div className="relative" ref={mobileCartRef}>
-              <NavIconBtn
-                label={t("cart")}
-                onClick={() => setCartPopupOpen((v) => !v)}
-                badge={cartCount}
-                className="text-white hover:text-kaboz-purple"
+            <NavIconBtn
+              label={t("cart")}
+              onClick={openCartDrawer}
+              badge={cartCount}
+              className="text-white hover:text-kaboz-purple"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  className="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                >
-                  <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H6" />
-                  <circle cx="10" cy="20" r="1" />
-                  <circle cx="18" cy="20" r="1" />
-                </svg>
-              </NavIconBtn>
-              {cartPopupOpen ? (
-                <CartDropdown
-                  items={cartPopupItems}
-                  currency={currency}
-                  delivery_fee={delivery_fee}
-                  cartSubtotal={cartSubtotal}
-                  cartTotal={cartTotal}
-                  cartCount={cartCount}
-                  updateQuantity={updateQuantity}
-                  onClose={() => setCartPopupOpen(false)}
-                  navigate={navigate}
-                  t={t}
-                />
-              ) : null}
-            </div>
+                <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H6" />
+                <circle cx="10" cy="20" r="1" />
+                <circle cx="18" cy="20" r="1" />
+              </svg>
+            </NavIconBtn>
           </div>
         </div>
 
@@ -769,7 +754,7 @@ const Navbar = () => {
             </NavIconBtn>
             <NavIconBtn
               label={t("cart")}
-              onClick={() => setCartPopupOpen((v) => !v)}
+              onClick={openCartDrawer}
               badge={cartCount}
               showZeroBadge
             >
@@ -785,20 +770,6 @@ const Navbar = () => {
                 <circle cx="18" cy="20" r="1" />
               </svg>
             </NavIconBtn>
-            {cartPopupOpen ? (
-              <CartDropdown
-                items={cartPopupItems}
-                currency={currency}
-                delivery_fee={delivery_fee}
-                cartSubtotal={cartSubtotal}
-                cartTotal={cartTotal}
-                cartCount={cartCount}
-                updateQuantity={updateQuantity}
-                onClose={() => setCartPopupOpen(false)}
-                navigate={navigate}
-                t={t}
-              />
-            ) : null}
           </div>
         </div>
       </div>

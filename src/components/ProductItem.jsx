@@ -51,6 +51,7 @@ const ProductItem = ({
   brand = "",
   modelName = "",
   reviews = [],
+  hideDiscountBadge = false,
 }) => {
   const { currency, addToCart } = useContext(ShopContext);
   const navigate = useNavigate();
@@ -217,7 +218,7 @@ const ProductItem = ({
               className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             />
 
-            {discountPercent ? (
+            {!hideDiscountBadge && (discountPercent ? (
               <span className="absolute left-2.5 top-2.5 z-[2] flex h-11 w-11 flex-col items-center justify-center rounded-full bg-kaboz-sale text-center leading-none text-white shadow-sm">
                 <span className="text-[8px] font-bold uppercase tracking-wide">
                   Sale
@@ -230,7 +231,7 @@ const ProductItem = ({
               <span className="absolute left-2.5 top-2.5 z-[2] rounded-sm bg-kaboz-gold px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-kaboz-ink">
                 New Arrival
               </span>
-            ) : null}
+            ) : null)}
           </div>
 
           {/* Right-side action icons + left tooltips */}

@@ -11,6 +11,7 @@ const ProductRail = ({
   emptyText = "No products available right now.",
   sectionIcon = "flame",
   accent = "purple",
+  hideDiscountBadge = false,
 }) => {
   const scrollerRef = useRef(null);
 
@@ -81,6 +82,7 @@ const ProductRail = ({
                   variant="light"
                   compact
                   date={item.date}
+                  hideDiscountBadge={hideDiscountBadge}
                 />
               </div>
             ))}

@@ -9,6 +9,7 @@ import {
   SECURITY_HUB_PATH,
 } from "../utils/categoryLinks";
 import { IconChevronRight } from "./ui/Icons";
+import CategoryDepartmentIcon from "./ui/CategoryIcon";
 import livingHero from "../assets/banners/kaboz-living-hero.jpg";
 import securityHero from "../assets/banners/kaboz-security-hero.jpg";
 import centerHero from "../assets/banners/hero-section-main-banner.jpg";
@@ -79,18 +80,18 @@ const DepartmentsPanel = ({ categories, isLoading }) => (
             >
               <Link
                 to={cat.href || getCategoryPath(cat.name)}
-                className="box-border flex h-full min-h-[44px] w-full items-center gap-2.5 px-3 text-[13px] text-kaboz-slate transition hover:bg-[#fafafa] hover:text-kaboz-purple xl:min-h-[48px] xl:gap-3 xl:px-4 xl:text-[14px]"
+                className="group box-border flex h-full min-h-[44px] w-full items-center gap-2.5 px-3 text-[13px] text-kaboz-slate transition hover:bg-[#fafafa] hover:text-kaboz-purple xl:min-h-[48px] xl:gap-3 xl:px-4 xl:text-[14px]"
               >
                 <span
                   aria-hidden
-                  className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-[#f3f3f3] text-[12px] font-semibold text-[#888]"
+                  className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-[#f3f3f3] text-[#555] transition-colors group-hover:bg-kaboz-orange-soft group-hover:text-kaboz-orange"
                 >
-                  {getCategoryDisplayName(cat.name).slice(0, 1)}
+                  <CategoryDepartmentIcon name={cat.name} className="h-4 w-4" />
                 </span>
                 <span className="min-w-0 flex-1 truncate font-medium leading-snug">
                   {getCategoryDisplayName(cat.name)}
                 </span>
-                <IconChevronRight className="h-3.5 w-3.5 flex-shrink-0 text-kaboz-faint" />
+                <IconChevronRight className="h-3.5 w-3.5 flex-shrink-0 text-kaboz-faint transition-transform group-hover:translate-x-0.5" />
               </Link>
             </li>
           ))}

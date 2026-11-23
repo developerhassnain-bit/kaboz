@@ -115,23 +115,23 @@ const Footer = () => {
                 <img
                   src={assets.kabozLogo}
                   alt="Kaboz"
-                  className="mb-6 h-10 w-auto lg:h-11"
+                  className="mb-3 h-9 w-auto lg:h-10"
                 />
               </Link>
-              <p className="mb-3 text-sm text-kaboz-mute">We accept:</p>
+              <p className="mb-2 text-xs font-medium text-kaboz-mute sm:text-sm">We accept:</p>
               <div
-                className="flex flex-wrap items-center gap-4 sm:gap-5"
+                className="flex items-center gap-3.5 sm:gap-4"
                 aria-label="Accepted payment methods"
               >
                 <img
                   src={assets.visa}
                   alt="Visa"
-                  className="h-[22px] w-auto object-contain sm:h-6"
+                  className="h-5 w-auto object-contain sm:h-[22px]"
                 />
                 <img
                   src={assets.maestrocard}
                   alt="Mastercard"
-                  className="h-8 w-auto object-contain sm:h-9"
+                  className="h-7 w-auto object-contain sm:h-8"
                 />
               </div>
             </div>

@@ -77,6 +77,7 @@ const BestSellerGrid = ({ preferredIds = [] }) => {
               variant="light"
               compact
               date={item.date}
+              hideDiscountBadge
             />
           ))}
         </div>

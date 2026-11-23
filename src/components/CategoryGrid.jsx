@@ -11,6 +11,7 @@ import {
 } from "../utils/categoryLinks";
 import { ShopContext } from "../context/ShopContext";
 import SectionHeader from "./SectionHeader";
+import CategoryDepartmentIcon from "./ui/CategoryIcon";
 
 /** Home / living categories — shown via View all, not in this hardware strip. */
 const LIVING_CATEGORIES = new Set([
@@ -88,10 +89,8 @@ const CategoryGrid = () => {
                           loading="lazy"
                         />
                       ) : (
-                        <div className="flex h-full w-full items-center justify-center">
-                          <span className="font-display text-lg font-bold text-kaboz-purple/45">
-                            {cat.name.slice(0, 1)}
-                          </span>
+                        <div className="flex h-full w-full items-center justify-center text-kaboz-orange">
+                          <CategoryDepartmentIcon name={cat.name} className="h-6 w-6" />
                         </div>
                       )}
                     </div>
@@ -146,10 +145,8 @@ const CategoryGrid = () => {
                           loading="lazy"
                         />
                       ) : (
-                        <div className="flex h-full w-full items-center justify-center">
-                          <span className="font-display text-2xl font-bold text-kaboz-purple/45">
-                            {cat.name.slice(0, 1)}
-                          </span>
+                        <div className="flex h-full w-full items-center justify-center text-kaboz-orange">
+                          <CategoryDepartmentIcon name={cat.name} className="h-10 w-10" />
                         </div>
                       )}
                     </div>

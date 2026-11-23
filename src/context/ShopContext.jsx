@@ -31,11 +31,14 @@ const ShopContextProvider = (props) => {
   const [productsError, setProductsError] = useState("");
   const [token, setToken] = useState("");
   const [user, setUser] = useState(null);
+  const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
+  const openCartDrawer = () => setCartDrawerOpen(true);
+  const closeCartDrawer = () => setCartDrawerOpen(false);
   const navigate = useNavigate();
 
   /**
    * @param {string} itemId product _id
-   * @param {{ color?: string, design?: string, colorImage?: string, quantity?: number }} options
+   * @param {{ color?: string, design?: string, colorImage?: string, quantity?: number, skipDrawer?: boolean }} options
    */
   const addToCart = async (itemId, options = {}) => {
     const {
@@ -43,6 +46,7 @@ const ShopContextProvider = (props) => {
       design = "",
       colorImage = "",
       quantity: addQty = 1,
+      skipDrawer = false,
     } = options;
 
     const lineKey = makeCartLineKey(itemId, color);
@@ -63,6 +67,10 @@ const ShopContextProvider = (props) => {
     }
 
     setCartItems(cartData);
+
+    if (!skipDrawer) {
+      setCartDrawerOpen(true);
+    }
 
     if (token) {
       try {
@@ -249,6 +257,10 @@ const ShopContextProvider = (props) => {
     setToken,
     user,
     setUser,
+    cartDrawerOpen,
+    setCartDrawerOpen,
+    openCartDrawer,
+    closeCartDrawer,
   };
 
   return (

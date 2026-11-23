@@ -260,7 +260,7 @@ const Product = () => {
     whatsappMessage
   )}`;
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (goToCart = false) => {
     if (allColors.length > 0 && !selectedColor) {
       toast.error("Please select a color before adding to cart");
       return;
@@ -273,11 +273,14 @@ const Product = () => {
       design: selectedType?.name || selectedSwatch?.typeName || "",
       colorImage: selectedSwatch?.image || "",
       quantity,
+      skipDrawer: goToCart,
     });
     toast.success("Added to cart");
     setTimeout(() => {
       setAdding(false);
-      navigate("/cart");
+      if (goToCart) {
+        navigate("/cart");
+      }
     }, 250);
   };
 
@@ -718,7 +721,7 @@ const Product = () => {
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <button
               type="button"
-              onClick={handleAddToCart}
+              onClick={() => handleAddToCart(false)}
               disabled={adding}
               className="flex h-12 flex-1 items-center justify-center rounded-[6px] bg-kaboz-orange px-6 text-sm font-bold text-white transition hover:bg-kaboz-orange-dark disabled:opacity-80 sm:min-w-[160px] sm:flex-none"
             >
@@ -727,7 +730,7 @@ const Product = () => {
             <button
               type="button"
               onClick={() => {
-                handleAddToCart();
+                handleAddToCart(true);
               }}
               disabled={adding}
               className="flex h-12 flex-1 items-center justify-center rounded-[6px] border-2 border-kaboz-ink bg-white px-6 text-sm font-bold text-kaboz-ink transition hover:bg-kaboz-ink hover:text-white disabled:opacity-80 sm:min-w-[140px] sm:flex-none"

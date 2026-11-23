@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import CatalogProductCard from "../components/CatalogProductCard";
 import Breadcrumbs from "../components/Breadcrumbs";
 import PaginationBar from "../components/PaginationBar";
 import useCategories from "../hooks/useCategories";
+import { categoryIcons } from "../assets/categoryIcons";
+import CategoryDepartmentIcon from "../components/ui/CategoryIcon";
 import {
   cameraRecorderRank,
   getCategoryDisplayName,
@@ -51,6 +53,7 @@ const Collection = () => {
   } = useContext(ShopContext);
   const { categories, isLoading: isLoadingCategories } = useCategories();
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const [showFilter, setShowFilter] = useState(false);
   const [showSortSheet, setShowSortSheet] = useState(false);
@@ -148,6 +151,14 @@ const Collection = () => {
   const resetPageInParams = (params) => {
     params.delete("page");
     return params;
+  };
+
+  const selectCategoryShortcut = (catName) => {
+    if (catName) {
+      navigate(getCategoryPath(catName));
+    } else {
+      navigate("/collection");
+    }
   };
 
   const toggleCategory = (value) => {
@@ -435,18 +446,6 @@ const Collection = () => {
 
   const sidebar = (
     <div className="space-y-0">
-      {hasActiveFilters ? (
-        <div className="mb-3 flex justify-end">
-          <button
-            type="button"
-            onClick={clearAllFilters}
-            className="text-sm font-medium text-kaboz-orange underline"
-          >
-            Clear all
-          </button>
-        </div>
-      ) : null}
-
       <Accordion
         title="category"
         open={openPanels.category}
@@ -460,14 +459,13 @@ const Collection = () => {
               ? shortcutCategories
               : orderedCategories
             ).map((cat) => {
-              const count = categoryCounts.get(cat.name) || 0;
               const active = selectedCategories.includes(cat.name);
               return (
                 <button
                   key={cat._id}
                   type="button"
                   onClick={() => toggleCategory(cat.name)}
-                  className={`flex w-full items-center justify-between gap-2 text-left text-[14px] transition hover:underline md:text-[15px] ${
+                  className={`flex w-full items-center text-left text-[14px] transition hover:underline md:text-[15px] ${
                     active
                       ? "font-semibold text-kaboz-orange"
                       : "text-kaboz-ink"
@@ -475,9 +473,6 @@ const Collection = () => {
                 >
                   <span className="truncate">
                     {getCategoryDisplayName(cat.name)}
-                  </span>
-                  <span className="flex-shrink-0 text-[13px] text-kaboz-mute">
-                    {count}
                   </span>
                 </button>
               );
@@ -500,16 +495,13 @@ const Collection = () => {
                   key={label}
                   type="button"
                   onClick={() => toggleSubCategory(label)}
-                  className={`flex w-full items-center justify-between gap-2 text-left text-[14px] transition hover:underline ${
+                  className={`flex w-full items-center text-left text-[14px] transition hover:underline ${
                     active
                       ? "font-semibold text-kaboz-orange"
                       : "text-kaboz-ink"
                   }`}
                 >
                   <span className="truncate">{label}</span>
-                  <span className="text-[13px] text-kaboz-mute">
-                    {subcategoryCounts.get(label) || 0}
-                  </span>
                 </button>
               );
             })}
@@ -524,10 +516,10 @@ const Collection = () => {
           onToggle={() => togglePanel("brand")}
         >
           <div className="flex flex-col gap-3.5">
-            {brandOptions.slice(0, brandLimit).map(({ name, count }) => (
+            {brandOptions.slice(0, brandLimit).map(({ name }) => (
               <label
                 key={name}
-                className="flex cursor-pointer items-center justify-between gap-2 text-[14px] text-kaboz-ink"
+                className="flex cursor-pointer items-center gap-2 text-[14px] text-kaboz-ink"
               >
                 <span className="flex min-w-0 items-center gap-2.5">
                   <input
@@ -538,7 +530,6 @@ const Collection = () => {
                   />
                   <span className="truncate">{name}</span>
                 </span>
-                <span className="text-[13px] text-kaboz-mute">{count}</span>
               </label>
             ))}
             {brandOptions.length > brandLimit ? (
@@ -642,11 +633,72 @@ const Collection = () => {
       <Breadcrumbs items={breadcrumbItems} />
 
       {/* Adarc title + sort row */}
-      <div className="mb-4 flex items-end justify-between gap-4 sm:mb-5">
+      <div className="mb-3 flex items-center justify-between gap-4 sm:mb-4">
         <h1 className="font-display text-[22px] font-bold leading-tight text-kaboz-ink sm:text-[26px]">
           {heading}
         </h1>
         {sortSelect}
+      </div>
+
+      {/* Top category icons row — Onsus / Adarc shop style */}
+      <div className="mb-5 border-b border-kaboz-line pb-4 sm:mb-6 sm:pb-5">
+        <div className="flex items-start gap-3.5 overflow-x-auto pb-1.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-5">
+          {shortcutCategories.map((cat) => {
+            const displayName = getCategoryDisplayName(cat.name);
+            const active =
+              selectedCategories.includes(cat.name) ||
+              activeCategoryName === cat.name;
+            const iconImg = categoryIcons[cat.name];
+
+            return (
+              <button
+                key={cat._id || cat.name}
+                type="button"
+                onClick={() => selectCategoryShortcut(cat.name)}
+                className="group flex w-[68px] flex-shrink-0 flex-col items-center gap-1.5 text-center sm:w-[80px] sm:gap-2"
+              >
+                <div
+                  className={`relative flex h-[54px] w-[54px] items-center justify-center overflow-hidden rounded-full transition-all duration-200 sm:h-[64px] sm:w-[64px] ${
+                    active
+                      ? "bg-kaboz-orange-soft ring-2 ring-kaboz-orange shadow-md"
+                      : "bg-[#f5f5f5] ring-1 ring-kaboz-line hover:ring-kaboz-orange/60 hover:shadow-sm"
+                  }`}
+                >
+                  {iconImg ? (
+                    <img
+                      src={iconImg}
+                      alt={displayName}
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span
+                      className={
+                        active
+                          ? "text-kaboz-orange"
+                          : "text-[#555] transition-colors group-hover:text-kaboz-orange"
+                      }
+                    >
+                      <CategoryDepartmentIcon
+                        name={cat.name}
+                        className="h-6 w-6 sm:h-7 sm:w-7"
+                      />
+                    </span>
+                  )}
+                </div>
+                <span
+                  className={`line-clamp-2 text-[11px] leading-tight transition-colors sm:text-xs ${
+                    active
+                      ? "font-bold text-kaboz-orange"
+                      : "font-medium text-kaboz-ink group-hover:text-kaboz-orange"
+                  }`}
+                >
+                  {displayName}
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {isLivingHub ? (
@@ -663,7 +715,7 @@ const Collection = () => {
       <div className="flex w-full gap-4 lg:gap-5">
         {/* Desktop sidebar — Adarc ~260px */}
         <aside className="hidden w-[240px] flex-shrink-0 overflow-x-hidden lg:block xl:w-[260px]">
-          <div className="sticky top-28 pr-1">{sidebar}</div>
+          <div className="pr-1">{sidebar}</div>
         </aside>
 
         {/* Mobile filter drawer */}

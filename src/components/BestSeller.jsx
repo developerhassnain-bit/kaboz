@@ -78,6 +78,7 @@ const BestSeller = ({ preferredIds = [] }) => {
       emptyText="No products in the catalog yet."
       sectionIcon="flame"
       accent="green"
+      hideDiscountBadge
     />
   );
 };

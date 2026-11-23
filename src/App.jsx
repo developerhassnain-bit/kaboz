@@ -24,6 +24,7 @@ import UpholsteryLanding from "./pages/UpholsteryLanding";
 import Verify from "./pages/Verify";
 import WhatsAppButton from "./components/WhatsAppButton";
 import MobileBottomNav from "./components/MobileBottomNav";
+import CartDrawer from "./components/CartDrawer";
 import Services from "./pages/Services";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
@@ -206,6 +207,7 @@ const App = () => {
       {!isLoginPage && !useLivingChrome && <Footer />}
       {!useLivingChrome && <MobileBottomNav />}
       <WhatsAppButton />
+      <CartDrawer />
     </div>
   );
 };
