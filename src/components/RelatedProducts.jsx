@@ -36,12 +36,16 @@ const RelatedProducts = ({
       const sameSub = productsCopy.filter(
         (item) => item.subCategory === subCategory
       );
+      const otherSub = productsCopy.filter(
+        (item) => item.subCategory !== subCategory
+      );
       if (sameSub.length > 0) {
-        productsCopy = sameSub;
+        productsCopy = [...sameSub, ...otherSub];
       }
     }
 
-    setRelated(productsCopy.slice(0, 10));
+    // Limit to exactly 1 row (max 5 products on desktop 5-column grid)
+    setRelated(productsCopy.slice(0, 5));
   }, [products, category, subCategory, currentProductSlug, currentProductId]);
 
   if (related.length === 0) return null;
@@ -50,26 +54,30 @@ const RelatedProducts = ({
     <div className="my-6 sm:my-10">
       <SectionHeader title="Products Related To This Item" icon="grid" accent="blue" />
 
-      <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-7 md:grid-cols-4 lg:grid-cols-5 xl:gap-x-5">
+      <div className="flex gap-3 overflow-x-auto pb-2 md:grid md:grid-cols-5 md:gap-4 xl:gap-5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {related.map((item) => (
-          <ProductItem
+          <div
             key={item._id}
-            id={item._id}
-            slug={item.slug}
-            name={item.name}
-            price={item.price}
-            originalPrice={item.originalPrice}
-            image={item.image}
-            category={item.category}
-            subCategory={item.subCategory}
-            sku={item.sku}
-            brand={item.brand}
-            modelName={item.modelName}
-            curtainTypes={item.curtainTypes}
-            date={item.date}
-            reviews={item.reviews}
-            compact
-          />
+            className="w-[45%] min-w-[155px] shrink-0 md:w-auto md:min-w-0 md:shrink flex flex-col h-full"
+          >
+            <ProductItem
+              id={item._id}
+              slug={item.slug}
+              name={item.name}
+              price={item.price}
+              originalPrice={item.originalPrice}
+              image={item.image}
+              category={item.category}
+              subCategory={item.subCategory}
+              sku={item.sku}
+              brand={item.brand}
+              modelName={item.modelName}
+              curtainTypes={item.curtainTypes}
+              date={item.date}
+              reviews={item.reviews}
+              compact
+            />
+          </div>
         ))}
       </div>
     </div>
