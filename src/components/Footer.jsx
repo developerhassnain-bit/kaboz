@@ -183,8 +183,8 @@ const Footer = () => {
               </FooterColumn>
 
               <FooterColumn title="Contact">
-                <ul className="space-y-4 text-kaboz-mute">
-                  <li className="flex gap-3">
+                <ul className="space-y-2.5 text-kaboz-mute">
+                  <li className="flex gap-2.5">
                     <span
                       className="mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center text-kaboz-ink"
                       aria-hidden
@@ -205,7 +205,7 @@ const Footer = () => {
                       Ajman
                     </span>
                   </li>
-                  <li className="flex items-center gap-3">
+                  <li className="flex items-center gap-2.5">
                     <span
                       className="flex h-5 w-5 flex-shrink-0 items-center justify-center text-kaboz-ink"
                       aria-hidden
@@ -227,7 +227,7 @@ const Footer = () => {
                       +971 55 269 3100
                     </a>
                   </li>
-                  <li className="flex items-center gap-3">
+                  <li className="flex items-center gap-2.5">
                     <span
                       className="flex h-5 w-5 flex-shrink-0 items-center justify-center text-kaboz-ink"
                       aria-hidden

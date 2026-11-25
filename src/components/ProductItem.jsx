@@ -9,6 +9,7 @@ import {
   WISHLIST_EVENT,
 } from "../utils/wishlist";
 import { IconClose } from "./ui/Icons";
+import PriceText from "./ui/PriceText";
 
 /** Flatten curtainTypes → unique color swatches for card UI */
 const collectColorSwatches = (curtainTypes = []) => {
@@ -410,13 +411,11 @@ const ProductItem = ({
             className="mt-auto flex items-baseline gap-2 pt-2.5"
           >
             <p className="text-[18px] font-bold tracking-tight text-kaboz-price sm:text-[20px]">
-              {currency}
-              {price}
+              <PriceText currency={currency} amount={price} />
             </p>
             {discountPercent ? (
               <p className="text-xs text-kaboz-faint line-through sm:text-sm">
-                {currency}
-                {originalPrice}
+                <PriceText currency={currency} amount={originalPrice} />
               </p>
             ) : null}
           </Link>
@@ -475,12 +474,10 @@ const ProductItem = ({
               ) : null}
 
               <p className="mt-4 font-display text-2xl font-bold text-kaboz-price">
-                {currency}
-                {price}
+                <PriceText currency={currency} amount={price} />
                 {discountPercent ? (
                   <span className="ml-2 text-base font-normal text-kaboz-mute line-through">
-                    {currency}
-                    {originalPrice}
+                    <PriceText currency={currency} amount={originalPrice} />
                   </span>
                 ) : null}
               </p>

@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { ShopContext } from "../context/ShopContext";
 import { Link } from "react-router-dom";
 import { getDiscountPercent } from "../utils/pricing";
+import PriceText from "./ui/PriceText";
 
 const Star = ({ filled }) => (
   <svg
@@ -56,13 +57,11 @@ const BestProductItem = ({ slug, image, name, price, originalPrice, rating = 4 }
         {/* Price */}
         <div className="mt-1 flex items-baseline gap-2">
           <p className="text-base font-bold text-orange-600">
-            {currency}
-            {price}
+            <PriceText currency={currency} amount={price} />
           </p>
           {discountPercent && (
             <p className="text-xs text-gray-400 line-through">
-              {currency}
-              {originalPrice}
+              <PriceText currency={currency} amount={originalPrice} />
             </p>
           )}
         </div>

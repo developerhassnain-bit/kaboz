@@ -5,6 +5,7 @@ import { getDiscountPercent } from "../utils/pricing";
 import { pickProductsByIds } from "../utils/homepageProducts";
 import { prioritizeCctvProducts } from "../utils/categoryLinks";
 import { IconChevronLeft, IconChevronRight } from "./ui/Icons";
+import PriceText from "./ui/PriceText";
 
 const pad = (n) => String(n).padStart(2, "0");
 
@@ -132,14 +133,15 @@ const DealOfTheDay = ({ preferredIds = [] }) => {
                   </p>
                   <div className="mt-2 flex flex-wrap items-baseline gap-2">
                     <span className="text-base font-bold text-kaboz-price">
-                      {currency}
-                      {p.price}
+                      <PriceText currency={currency} amount={p.price} />
                     </span>
                     {p.originalPrice &&
                     Number(p.originalPrice) > Number(p.price) ? (
                       <span className="text-xs text-kaboz-faint line-through">
-                        {currency}
-                        {p.originalPrice}
+                        <PriceText
+                          currency={currency}
+                          amount={p.originalPrice}
+                        />
                       </span>
                     ) : null}
                   </div>

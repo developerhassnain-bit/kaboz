@@ -559,34 +559,38 @@ const Navbar = () => {
 
           <div className="hidden flex-shrink-0 items-center gap-3 lg:flex">
             <span
-              className="flex h-12 w-12 items-center justify-center text-kaboz-orange"
+              className="flex items-center justify-center text-kaboz-ink"
               aria-hidden
             >
               <svg
                 viewBox="0 0 24 24"
-                className="h-9 w-9"
+                className="h-7 w-7"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="1.4"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                <path d="M4 14v-1a8 8 0 0116 0v1" />
-                <path d="M4 14a2 2 0 002 2h1v-5H6a2 2 0 00-2 2zM20 14a2 2 0 01-2 2h-1v-5h1a2 2 0 012 2z" />
-                <path d="M9 19h6" />
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
               </svg>
             </span>
-            <div className="text-[15px] sm:text-[16px] leading-snug">
+            <div className="space-y-1 text-[13px] leading-snug sm:text-[14px]">
               <p className="text-kaboz-mute">
                 {t("callUsNow")}{" "}
                 <a
                   href="tel:+971552693100"
-                  className="text-[16px] sm:text-[17px] font-bold text-kaboz-orange hover:text-kaboz-orange-dark"
+                  className="font-medium text-kaboz-orange transition hover:text-kaboz-orange-dark"
                 >
                   +971 55 269 3100
                 </a>
               </p>
-              <p className="mt-1 text-kaboz-mute">
+              <p className="text-kaboz-mute">
                 {t("email")}{" "}
-                <a href="mailto:sales@kaboz.ae" className="kb-link font-semibold text-[15px] sm:text-[16px] !text-kaboz-orange hover:!text-kaboz-orange-dark">
+                <a
+                  href="mailto:sales@kaboz.ae"
+                  className="font-medium text-[#2563eb] transition hover:underline"
+                >
                   sales@kaboz.ae
                 </a>
               </p>

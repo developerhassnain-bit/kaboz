@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ShopContext } from "../context/ShopContext";
 import { getDiscountPercent } from "../utils/pricing";
+import PriceText from "./ui/PriceText";
 import { pickProductsByIds } from "../utils/homepageProducts";
 import { isCctvProduct, prioritizeCctvProducts } from "../utils/categoryLinks";
 import {
@@ -78,7 +79,7 @@ const CompactProduct = ({ product, currency }) => {
     <div className="group/item relative flex gap-3 border-b border-kaboz-line py-3 last:border-b-0">
       <Link
         to={href}
-        className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-[4px] bg-kaboz-soft sm:h-[72px] sm:w-[72px]"
+        className="h-16 w-16 flex-shrink-0 overflow-hidden bg-white sm:h-[72px] sm:w-[72px]"
       >
         {product.image?.[0] ? (
           <img
@@ -102,14 +103,12 @@ const CompactProduct = ({ product, currency }) => {
         </Link>
         <div className="mt-1 flex flex-wrap items-baseline gap-1.5">
           <span className="text-sm font-bold text-kaboz-price">
-            {currency}
-            {product.price}
+            <PriceText currency={currency} amount={product.price} />
           </span>
           {product.originalPrice &&
           Number(product.originalPrice) > Number(product.price) ? (
             <span className="text-xs text-kaboz-faint line-through">
-              {currency}
-              {product.originalPrice}
+              <PriceText currency={currency} amount={product.originalPrice} />
             </span>
           ) : null}
         </div>

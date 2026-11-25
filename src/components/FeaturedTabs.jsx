@@ -12,6 +12,7 @@ import {
   IconEye,
   IconHeart,
 } from "./ui/Icons";
+import PriceText from "./ui/PriceText";
 
 const TABS = [
   { id: "feature", label: "Feature" },
@@ -171,13 +172,11 @@ const CompactRow = ({ product, currency }) => {
         </Link>
         <div className="mt-1.5 flex flex-wrap items-baseline gap-1.5">
           <span className="text-sm font-bold text-kaboz-price">
-            {currency}
-            {product.price}
+            <PriceText currency={currency} amount={product.price} />
           </span>
           {onSale ? (
             <span className="text-xs text-kaboz-faint line-through">
-              {currency}
-              {product.originalPrice}
+              <PriceText currency={currency} amount={product.originalPrice} />
             </span>
           ) : null}
         </div>
@@ -294,13 +293,11 @@ const FeaturedCenter = ({ product, currency }) => {
         </Link>
         <div className="mt-2 flex flex-wrap items-baseline gap-2">
           <span className="text-2xl font-bold text-kaboz-price">
-            {currency}
-            {product.price}
+            <PriceText currency={currency} amount={product.price} />
           </span>
           {onSale ? (
             <span className="text-sm text-kaboz-faint line-through">
-              {currency}
-              {product.originalPrice}
+              <PriceText currency={currency} amount={product.originalPrice} />
             </span>
           ) : null}
         </div>

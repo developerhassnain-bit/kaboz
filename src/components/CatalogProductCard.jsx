@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import { getDiscountPercent } from "../utils/pricing";
 import { toast } from "react-toastify";
+import PriceText from "./ui/PriceText";
 
 /**
  * Adarc-style catalog card: bordered tile, square image (scale on hover),
@@ -94,13 +95,11 @@ const CatalogProductCard = ({
 
         <div className="mt-3 flex flex-wrap items-baseline gap-2">
           <span className="text-[19px] font-semibold leading-7 text-kaboz-orange sm:text-[22px]">
-            {currency}
-            {price}
+            <PriceText currency={currency} amount={price} />
           </span>
           {onSale ? (
             <span className="text-sm text-kaboz-faint line-through">
-              {currency}
-              {originalPrice}
+              <PriceText currency={currency} amount={originalPrice} />
             </span>
           ) : null}
         </div>
